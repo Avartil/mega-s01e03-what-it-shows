@@ -12,6 +12,8 @@ Local analysis of the MEGA.dev support-kb export, dated 2026-10-04. This reposit
 
 The export has 427 rows, including 15 repeated report IDs. Five anomalous reports remain within the source classifier's parser group; the review keeps their evidence and uncertainty visible. There is no proven timezone diagnosis in this export.
 
+The course's later engineering update says #4471 closed on 5 October: parser fixed (`fix(dates): parse dd/mm for eu locales`), hint won't fix (booking-v3 form retired). The parser issue therefore closes as completed and the hint issue as not planned. Historical counts remain 379 and 33.
+
 - Review source: [signed kb page](src/routes/kb/incidents/4471-review/+page.svx).
 - Desk view: [rendered review HTML](rendered/kb/incidents/4471-review/index.html).
 - Initial issue bodies: [parser](tickets/parser.md), [hint](tickets/hint.md).

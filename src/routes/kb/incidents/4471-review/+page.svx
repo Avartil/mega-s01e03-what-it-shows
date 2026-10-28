@@ -31,6 +31,21 @@ can produce a wrong date, but they take different paths and need different fixes
 
 <ReviewEvidence />
 
+## Engineering outcome, 5 October
+
+After the initial ticket submission, the course desk published an update on the
+[challenge page](https://hq.mega.dev/challenges/what-it-shows#engineering-update):
+ticket #4471 closed on 5 October. The parser was **fixed** by
+`fix(dates): parse dd/mm for eu locales`. The hint was **won't fix** because the
+booking-v3 form was retired. The two ticket closure reasons must preserve that
+difference: parser **completed**, hint **not planned**.
+
+The exported reports and computed counts above remain the historical evidence
+through 4 October. Retirement is not evidence that the misleading hint was repaired,
+and this update does not independently explain each of the five anomalous reports.
+The fixes and checks discussed below describe the two failure mechanisms; the desk's
+actual resolutions are the ones recorded here.
+
 ## Shared parser: day-first dates read month first
 
 For a day-first tenant, the shared parser reads the supplied date month first. The

@@ -4,6 +4,10 @@ Source ticket: #4471. Course dataset: export dated 2026-10-04.
 Cause key: `parser`.
 Report count: **379 unique reports**, across **11 tenants**, received **2026-04-01 through 2026-10-04**.
 
+## Engineering outcome
+
+The course's engineering update states #4471 closed on 5 October: parser **FIXED**, `fix(dates): parse dd/mm for eu locales`. Close this ticket as **completed**. This is the desk's reported resolution, not an independent production verification. The five anomalous report bodies below remain unexplained by that update.
+
 ## Problem and scope
 
 The shared parser reads input month first even when the tenant writes day first. It can swap day and month in invites and reminders. R-41200 (Harbour Dental, app) reports 7 April becoming 4 July; R-41201 reports the reverse. Booking-v2 form reports and app/email reports belong to this group. A booking-v3 tenant's app or email report still belongs here.

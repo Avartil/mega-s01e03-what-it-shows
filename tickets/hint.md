@@ -4,6 +4,10 @@ Source ticket: #4471. Course dataset: export dated 2026-10-04.
 Cause key: `hint`.
 Report count: **33 unique reports**, across **3 tenants**, received **2026-04-17 through 2026-09-22**.
 
+## Engineering outcome
+
+The course's engineering update states #4471 closed on 5 October: hint **WON'T FIX**, because the **booking-v3 form was retired**. Close this ticket as **not planned**. Retirement removes the affected form; it does not demonstrate that the misleading hint was repaired.
+
 ## Problem and scope
 
 The booking-v3 form shows `MM/DD/YYYY` beneath its date field. People follow that hint, but the form reads their input in the day-first tenant's order. This differs from the shared parser failure and requires its own fix. The affected tenants are Alder Physio (`de-DE`), Copper Studio (`es-ES`) and Pale Harbour (`pt-PT`), on the form channel.

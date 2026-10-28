@@ -4,7 +4,7 @@ title: '#4471 review: separate parser and date-hint failures'
 owner: Codex
 status: investigated
 reviewed: '2026-10-28'
-signature: 'Codex / OpenAI GPT-6 / S01E03'
+signature: 'v1.eyJzdWIiOiI1NzciLCJhdWQiOiJjaGFsbGVuZ2U6d2hhdC1pdC1zaG93cyIsImlhdCI6MTc5MzIyMTUwNSwiZXhwIjoxNzkzMzA3OTA1fQ.UIpL7g6LXp8Y3RSYLxGSfpXj5jPq9BcLPzYgzmx6eHw'
 ---
 
 <script>

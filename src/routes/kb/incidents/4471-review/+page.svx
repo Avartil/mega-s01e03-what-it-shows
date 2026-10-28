@@ -1,0 +1,94 @@
+---
+layout: runbook
+title: '#4471 review: separate parser and date-hint failures'
+owner: Codex
+status: investigated
+reviewed: '2026-10-28'
+signature: 'Codex / OpenAI GPT-6 / S01E03'
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import DedupeExplorer from '#lib/kb/DedupeExplorer.svelte';
+  import ReviewEvidence from '#lib/kb/ReviewEvidence.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+</script>
+
+The original [incident page](/kb/incidents/4471) says “one issue, one fix queued.” Its
+rendered cause table shows two failures. Treat the prose as a claim and compare it with
+the components and the source reports before relying on it.
+
+<Callout>
+Split the parser and booking-v3 hint failures into separate engineering tickets. Both
+can produce a wrong date, but they take different paths and need different fixes.
+</Callout>
+
+## What the data shows
+
+<CauseTable ticket={4471} />
+
+<ReviewEvidence />
+
+## Shared parser: day-first dates read month first
+
+For a day-first tenant, the shared parser reads the supplied date month first. The
+booking-v2 form, app and email paths fall in this group; booking-v3 app and email
+reports do too. For example, R-41200 reports 7 April becoming 4 July. Use the tenant
+directory and `Intl.DateTimeFormat` date-part order, not the reporter's browser locale
+or intake tag, to identify the affected path.
+
+Fix the parser to respect the declared tenant date order and use an unambiguous date
+representation at system boundaries. Test app, email and booking-v2 with a day-first
+tenant and ambiguous input such as `07/04/2026`. Test a booking-v3 app report as well,
+because the form version alone does not decide the cause.
+
+## Booking-v3 form: hint contradicts the tenant's input order
+
+The booking-v3 date field prints `MM/DD/YYYY`. On a day-first tenant's form, people
+follow that hint, while the form interprets the value in the tenant's order. This is
+the hint failure, limited by the source classifier to the form channel on booking-v3.
+R-41230, from Copper Studio, is an example even though intake tagged it as parser.
+Correct the visible hint to match the actual parsing contract and test that contract
+for Alder Physio, Copper Studio and Pale Harbour. A parser-only change does not fix
+the misleading instruction on the form.
+
+## What the queue chart means
+
+<QueueTimeline ticket={4471} />
+
+Compare received dates with merge dates. Reports existed well before the desk merged
+its backlog. The later merges do not demonstrate that the bug started then or was
+fixed. The export is a snapshot through 4 October; re-check GitHub issue bodies,
+comments and states before submitting, because the desk keeps working.
+
+## Replace subject matching with cause matching
+
+The [triage page](/kb/triage/dedupe) and accepted [decision 0001](/kb/decisions/0001-dedupe-by-subject)
+instruct the desk to merge on subject alone. They are old enough to trigger the
+layout's stale warning. The explorer's executable examples contradict that rule:
+
+<DedupeExplorer />
+
+Matching subjects can hide different causes, even for the same tenant. Different
+subjects or channels can describe the same cause. Look up the tenant, locale, form
+and channel, then compare the failure mechanism. If the tenant is unknown, leave the
+report unplaced and investigate rather than merging on a matching subject.
+
+Decision 0001 remains unchanged because accepted decisions are immutable. Propose a
+new decision to supersede it after review by its owners. Keep the five anomalous
+reports listed above under explicit investigation; do not silently invent a proven
+third cause or count the same report twice.
+
+## Evidence and limits
+
+The tables and chart above execute the export's components. `ReviewEvidence.svelte`
+computes the reconciliation and exception list from the same data. The source is
+`reports-4471.json`, the tenant directory, `causes.ts`, `locales.ts`, and
+`desk-notes.json`. Counts describe the source classifier's partition, not proof that
+every report body establishes its assigned root cause. The rendered HTML is produced
+by the included build; the desk ref below is derived by `RenderStamp` from this page's
+frontmatter signature.
+
+<RenderStamp {signature} />
